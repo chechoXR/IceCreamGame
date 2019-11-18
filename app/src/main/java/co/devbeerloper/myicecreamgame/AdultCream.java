@@ -36,7 +36,9 @@ public class AdultCream {
         positionY =rd.nextInt((int)(screenHeigth/2));
         isJumping = false;
         //Getting bitmap from resource
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.cloud);
+
+
+        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.enemigo);
         spriteIcecreamCar  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
         this.maxX = screenWidth - (spriteIcecreamCar.getWidth()/2);
@@ -49,7 +51,7 @@ public class AdultCream {
         positionX = initialX;
         positionY = initialY;
 
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.cloud);
+        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.enemigo);
         spriteIcecreamCar  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
         this.maxX = screenWidth - (spriteIcecreamCar.getWidth()/2);
@@ -143,5 +145,10 @@ public class AdultCream {
 
     public boolean isVisible() {
         return visible;
+    }
+
+    public int random (){
+        int a = (int) Math.random()*4;
+        return a;
     }
 }
