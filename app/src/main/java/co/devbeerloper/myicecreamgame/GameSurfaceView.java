@@ -18,6 +18,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private IceCreamCar icecreamCar;
 
     private ArrayList<Cloud> clouds;
+
     private ArrayList<AdultCream> adultCreams;
     private ArrayList<BoyCream> boyCreams;
     ArrayList<Integer> removeID;
@@ -25,6 +26,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private Paint paintCloud;
     private Paint paintAdult;
     private Paint paintBoy;
+
     private Canvas canvas;
     private SurfaceHolder holder;
     private Thread gameplayThread = null;
@@ -43,12 +45,14 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         icecreamCar = new IceCreamCar(context, screenWith, screenHeight);
 
         this.clouds = new ArrayList<Cloud>();
-        this.adultCreams = new ArrayList<AdultCream>();
+
+      this.adultCreams = new ArrayList<AdultCream>();
         this.boyCreams = new ArrayList<BoyCream>();
         paint = new Paint();
         paintCloud = new Paint();
         paintAdult = new Paint();
         paintBoy = new Paint();
+
         holder = getHolder();
         isPlaying = true;
         rd = new Random();
@@ -103,6 +107,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
              else
                 removeID.add(i);
             }
+
             for (int i = 0; i < adultCreams.size(); i++) {
                 if(adultCreams.get(i).isVisible())
                     canvas.drawBitmap(adultCreams.get(i).getSpriteIcecreamCar(), adultCreams.get(i).getPositionX(), adultCreams.get(i).getPositionY(), new Paint());
@@ -123,6 +128,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             for (int i = 0; i < removeID.size(); i++)
                 boyCreams.remove(removeID.get(i));
 
+
             removeID.clear();
 
 
@@ -130,18 +136,19 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             int r = rd.nextInt(100);
             if (r > 95) {
                 Cloud cloud = new Cloud(getContext(), screenWith, screenHeight);
+
                 AdultCream adultCream = new AdultCream(getContext(), screenWith, screenHeight);
                 BoyCream boyCream = new BoyCream(getContext(), screenWith,screenHeight);
                 //canvas.drawBitmap(cloud.getSpriteIcecreamCar(),cloud.getPositionX(),cloud.getPositionY(),paintCloud);
                 clouds.add(cloud);
                 adultCreams.add(adultCream);
                 boyCreams.add(boyCream);
+
                 canvas.drawBitmap(cloud.getSpriteIcecreamCar(), cloud.getPositionX(), cloud.getPositionY(), new Paint());
                 holder.unlockCanvasAndPost(canvas);
             }
             else
                 holder.unlockCanvasAndPost(canvas);
-
 
 
         }

@@ -39,6 +39,7 @@ public class AdultCream {
 
 
         Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.enemigo);
+
         spriteIcecreamCar  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
         this.maxX = screenWidth - (spriteIcecreamCar.getWidth()/2);
@@ -51,7 +52,9 @@ public class AdultCream {
         positionX = initialX;
         positionY = initialY;
 
+
         Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.enemigo);
+
         spriteIcecreamCar  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
         this.maxX = screenWidth - (spriteIcecreamCar.getWidth()/2);
@@ -151,4 +154,5 @@ public class AdultCream {
         int a = (int) Math.random()*4;
         return a;
     }
+
 }

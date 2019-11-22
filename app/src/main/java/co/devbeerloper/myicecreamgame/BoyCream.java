@@ -36,7 +36,9 @@ public class BoyCream {
         positionY =rd.nextInt((int)(screenHeigth/2));
         isJumping = false;
         //Getting bitmap from resource
+
         Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.kid);
+
         spriteIcecreamCar  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
         this.maxX = screenWidth - (spriteIcecreamCar.getWidth()/2);
@@ -49,7 +51,9 @@ public class BoyCream {
         positionX = initialX;
         positionY = initialY;
 
+
         Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.kid);
+
         spriteIcecreamCar  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
         this.maxX = screenWidth - (spriteIcecreamCar.getWidth()/2);
