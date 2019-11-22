@@ -187,4 +187,10 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         return true;
     }
 
+    public boolean carCollision (float carPositionX, float carPositionY, float objectX, float objectY){
+        boolean collision = false;
+        if (carPositionX == objectX || carPositionY == objectY) collision = true;
+        return collision;
+    }
+
 }
