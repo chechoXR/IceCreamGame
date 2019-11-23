@@ -9,8 +9,8 @@ public class IceCreamCar {
 
     public static final float INIT_X =100;
     public static final float INIT_Y =100;
-    public static final int SPRITE_SIZE_WIDTH =350;
-    public static final int SPRITE_SIZE_HEIGTH=350;
+    public static final int SPRITE_SIZE_WIDTH =250;
+    public static final int SPRITE_SIZE_HEIGTH=250;
     public static final float GRAVITY_FORCE=10;
     private final int MIN_SPEED = 1;
     private final int MAX_SPEED = 20;

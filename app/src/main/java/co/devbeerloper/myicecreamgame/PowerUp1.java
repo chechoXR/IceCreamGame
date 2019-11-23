@@ -33,7 +33,7 @@ public class PowerUp1 {
 
         speed = 1;
         positionX =screenWidth;
-        positionY =rd.nextInt((int)(screenHeigth/2));
+        positionY =rd.nextInt((int)(screenHeigth));
         isJumping = false;
         //Getting bitmap from resource
         Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.cloud);

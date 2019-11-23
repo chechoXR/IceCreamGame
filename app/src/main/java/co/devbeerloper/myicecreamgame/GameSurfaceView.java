@@ -34,6 +34,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private Context context;
     private float screenWith;
     private float screenHeight;
+    private int score;
+
 
     /**
      * Contructor
@@ -46,7 +48,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
         this.clouds = new ArrayList<Cloud>();
 
-      this.adultCreams = new ArrayList<AdultCream>();
+        this.adultCreams = new ArrayList<AdultCream>();
         this.boyCreams = new ArrayList<BoyCream>();
         paint = new Paint();
         paintCloud = new Paint();
@@ -59,6 +61,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         this.context = context;
         this.screenWith = screenWith;
         this.screenHeight = screenHeight;
+        this.score = 0;
+
     }
 
     /**
@@ -81,35 +85,42 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             c.updateInfo();
         }
 
-        for(AdultCream a: adultCreams){
+        for (AdultCream a : adultCreams) {
             a.updateInfo();
         }
 
-        for (BoyCream b: boyCreams) {
+        for (BoyCream b : boyCreams) {
             b.updateInfo();
         }
 
     }
 
     private void paintFrame() {
+
+
+        ArrayList<Integer> PosY = new ArrayList<Integer>();
+
+        for (int i = 100; i < screenHeight; i += 150)
+            PosY.add(i);
+
         if (holder.getSurface().isValid()) {
             canvas = holder.lockCanvas();
             canvas.drawColor(Color.rgb(52, 153, 255));
-
 
             //holder.unlockCanvasAndPost(canvas);
             removeID = new ArrayList<Integer>();
 
 
-            for (int i=0; i< clouds.size(); i++) {
-             if(clouds.get(i).isVisible())
-                canvas.drawBitmap(clouds.get(i).getSpriteIcecreamCar(), clouds.get(i).getPositionX(), clouds.get(i).getPositionY(), new Paint());
-             else
-                removeID.add(i);
+            //Si está en pantalla se pinta, sino se borra de la lista
+            for (int i = 0; i < clouds.size(); i++) {
+                if (clouds.get(i).isVisible())
+                    canvas.drawBitmap(clouds.get(i).getSpriteIcecreamCar(), clouds.get(i).getPositionX(), clouds.get(i).getPositionY(), new Paint());
+                else
+                    removeID.add(i);
             }
 
             for (int i = 0; i < adultCreams.size(); i++) {
-                if(adultCreams.get(i).isVisible())
+                if (adultCreams.get(i).isVisible())
                     canvas.drawBitmap(adultCreams.get(i).getSpriteIcecreamCar(), adultCreams.get(i).getPositionX(), adultCreams.get(i).getPositionY(), new Paint());
                 else
                     removeID.add(i);
@@ -121,9 +132,10 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                     removeID.add(i);
             }
 
-            for (int i=0; i< removeID.size(); i++)
+
+            for (int i = 0; i < removeID.size(); i++)
                 clouds.remove(removeID.get(i));
-            for (int i = 0; i< removeID.size(); i++)
+            for (int i = 0; i < removeID.size(); i++)
                 adultCreams.remove(removeID.get(i));
             for (int i = 0; i < removeID.size(); i++)
                 boyCreams.remove(removeID.get(i));
@@ -132,22 +144,51 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             removeID.clear();
 
 
+            double porcentajeProbabilidad = 0.95;
+
             canvas.drawBitmap(icecreamCar.getSpriteIcecreamCar(), icecreamCar.getPositionX(), icecreamCar.getPositionY(), paint);
-            int r = rd.nextInt(100);
-            if (r > 95) {
+            int r = rd.nextInt(10000);
+            if (r > 10000 * porcentajeProbabilidad) {
                 Cloud cloud = new Cloud(getContext(), screenWith, screenHeight);
 
-                AdultCream adultCream = new AdultCream(getContext(), screenWith, screenHeight);
-                BoyCream boyCream = new BoyCream(getContext(), screenWith,screenHeight);
+                int pos = rd.nextInt(PosY.size() - 1);
+                AdultCream adultCream = new AdultCream(getContext(), screenWith, screenHeight, PosY.get(pos));
+                Boolean b = PosY.remove((Object) pos);
+                pos = rd.nextInt(PosY.size() - 1);
+
+                if (r % 2 == 0) {
+                    BoyCream boyCream = new BoyCream(getContext(), screenWith, screenHeight, PosY.get(pos));
+                    boyCreams.add(boyCream);
+                }
+
                 //canvas.drawBitmap(cloud.getSpriteIcecreamCar(),cloud.getPositionX(),cloud.getPositionY(),paintCloud);
                 clouds.add(cloud);
                 adultCreams.add(adultCream);
-                boyCreams.add(boyCream);
+
 
                 canvas.drawBitmap(cloud.getSpriteIcecreamCar(), cloud.getPositionX(), cloud.getPositionY(), new Paint());
                 holder.unlockCanvasAndPost(canvas);
-            }
-            else
+
+
+                ArrayList<BoyCream> newBoyCream = new ArrayList<BoyCream>();
+                for (BoyCream boyCream1 : boyCreams)
+                    if (checkBoyCollision(boyCream1))
+                        score += 10;
+                    else
+                        newBoyCream.add(boyCream1);
+
+                boyCreams = newBoyCream;
+
+                ArrayList<AdultCream> newAdultCream = new ArrayList<AdultCream>();
+                for (AdultCream adultCream1 : adultCreams)
+                    if (checkAdultCollision(adultCream1))
+                        score -= 10;
+                    else
+                        newAdultCream.add(adultCream1);
+
+                adultCreams = newAdultCream;
+
+            } else
                 holder.unlockCanvasAndPost(canvas);
 
 
@@ -194,10 +235,14 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         return true;
     }
 
-    public boolean carCollision (float carPositionX, float carPositionY, float objectX, float objectY){
-        boolean collision = false;
-        if (carPositionX == objectX || carPositionY == objectY) collision = true;
-        return collision;
+    public boolean checkBoyCollision(BoyCream boyCream) {
+
+        return icecreamCar.getPositionX() - boyCream.getPositionX() <= 5 && icecreamCar.getPositionY() - boyCream.getPositionY() <= 5;
+
+    }
+
+    public boolean checkAdultCollision(AdultCream adultCream) {
+        return icecreamCar.getPositionX()- adultCream.getPositionX() <=5 && icecreamCar.getPositionY()- adultCream.getPositionY() <=5;
     }
 
 }
